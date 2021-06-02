@@ -1,0 +1,17 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <OutputType>Exe</OutputType>
+    <TargetFramework>net5.0</TargetFramework>
+  </PropertyGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="Assets\js\main.js" />
+    <EmbeddedResource Include="Assets\css\styles.css" />
+    <EmbeddedResource Include="View\Cambio\MXN.html" />
+    <EmbeddedResource Include="View\Cambio\USD.html" />
+    <EmbeddedResource Include="View\Cartoes\Credito.html" />
+    <EmbeddedResource Include="View\Cartoes\Debito.html" />
+    <EmbeddedResource Include="View\Home\Index.html" />
+  </ItemGroup>
+</Project>
+
