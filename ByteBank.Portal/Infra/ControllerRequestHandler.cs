@@ -6,7 +6,7 @@ namespace ByteBank.Portal.Infra
 {
     public class ControllerRequestHandler
     {
-        public void Handle(HttpListenerResponse response, string path)
+        public void Handle(HttpListenerResponse response, string path) //TODO: test
         {
             var parts = path.Split(new char[] { '/' }, System.StringSplitOptions.RemoveEmptyEntries);
             var controllerName = parts[0];
