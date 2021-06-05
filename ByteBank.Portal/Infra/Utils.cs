@@ -1,4 +1,5 @@
 using System;
+using System.Linq;
 
 namespace ByteBank.Portal.Infra
 {
@@ -20,6 +21,14 @@ namespace ByteBank.Portal.Infra
                 return "text/html; charset=utf-8";
 
             throw new NotImplementedException("Tipo de conteúdo não previsto");
+        }
+
+        public static bool IsAFile(string path)
+        {
+            var pathParts = path.Split('/', StringSplitOptions.RemoveEmptyEntries);
+            var lastPart = pathParts.Last();
+
+            return lastPart.Contains('.');
         }
     }
 }

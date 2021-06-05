@@ -2,6 +2,7 @@ using System;
 using System.Net;
 using System.Reflection;
 using System.Text;
+using ByteBank.Portal.Controller;
 
 namespace ByteBank.Portal.Infra
 {
@@ -43,32 +44,18 @@ namespace ByteBank.Portal.Infra
 
             var path = request.Url.AbsolutePath;
 
-            var assembly = Assembly.GetExecutingAssembly(); //get metada from the executing assembly
-            var resourceName = Utils.ConvertPathNameToAssemblyName(path);
-
-            //stream can be understood as data flow. 
-            // you do not deal with a huge file at once (6GB, for example), you work with pieces of the file 
-            var resourceStream = assembly.GetManifestResourceStream(resourceName);
-
-            if(resourceStream == null)
+            if (Utils.IsAFile(path))
             {
-                response.StatusCode = 404;
-                response.OutputStream.Close();
+                var handler = new FileRequestHandler();
+                handler.Handle(response, path);
+            }
+            else
+            {
+                var handler = new ControllerRequestHandler();
+                handler.Handle(response, path);
             }
 
-            var bytesResource = new byte[resourceStream.Length];
 
-            resourceStream.Read(bytesResource, 0, (int)resourceStream.Length);
-
-            response.ContentType = Utils.GetContentType(path);
-
-            //always use stream for http listener
-            response.StatusCode = 200;
-            response.ContentLength64 = resourceStream.Length;
-
-            response.OutputStream.Write(bytesResource, 0, bytesResource.Length);
-
-            response.OutputStream.Close();
 
             httpListener.Stop();
         }

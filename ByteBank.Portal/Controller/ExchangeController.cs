@@ -16,7 +16,7 @@ namespace ByteBank.Portal.Controller
         public string MXN()
         {
             var finalValue = _exchangeService.Calculate("MXN", "BRL", 1);
-            var completeResourceName = "ByteBank.Portal.View.Cambio.MXN.html";
+            var completeResourceName = "ByteBank.Portal.View.Exchange.MXN.html";
             var assembly = Assembly.GetExecutingAssembly();
             var resourceStream = assembly.GetManifestResourceStream(completeResourceName);
 
