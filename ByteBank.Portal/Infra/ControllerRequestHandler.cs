@@ -21,7 +21,7 @@ namespace ByteBank.Portal.Infra
 
             // var methodInfo = controller.GetType().GetMethod(actionName);
             var methodInfo = _actionBinder.GetMethodInfo(controller, path);
-            var actionResult = (string)methodInfo.Invoke(controller, new object[0]);
+            var actionResult = (string)methodInfo.Invoke(controller);
 
             var fileBuffer = Encoding.UTF8.GetBytes(actionResult);
 

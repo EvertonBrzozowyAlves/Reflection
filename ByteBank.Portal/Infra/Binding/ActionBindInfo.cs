@@ -22,5 +22,28 @@ namespace ByteBank.Portal.Infra.Binding
 
             KeyValueTuple = new ReadOnlyCollection<KeyValueArgument>(keyValueArgument.ToList());
         }
+
+        public object Invoke(object controller)
+        {
+            var parametersCount = KeyValueTuple.Count;
+            var hasArguments = parametersCount > 0;
+
+            if (!hasArguments)
+                return MethodInfo.Invoke(controller, new object[0]);
+
+            var parametersInvoke = new object[parametersCount];
+            var parametersMethodInfo = MethodInfo.GetParameters();
+
+            for (var i = 0; i < parametersCount; i++)
+            {
+                var parameter = parametersMethodInfo[i];
+                var parameterName = parameter.Name;
+
+                var argument = KeyValueTuple.Single(tuple => tuple.Key == parameterName);
+                parametersInvoke[i] = Convert.ChangeType(argument.Value, parameter.ParameterType);
+            }
+
+            return MethodInfo.Invoke(controller, parametersInvoke);
+        }
     }
 }

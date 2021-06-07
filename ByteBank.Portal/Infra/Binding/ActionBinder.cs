@@ -7,7 +7,7 @@ namespace ByteBank.Portal.Infra.Binding
 {
     public class ActionBinder
     {
-        public MethodInfo GetMethodInfo(object controller, string path)
+        public ActionBindInfo GetMethodInfo(object controller, string path)
         {
             //Exchange/Calculate?originCurrency=BRL&destinyCurrency=USD&value=10
             //Exchange/Calculate?destinyCurrency=USD&value=10
@@ -20,17 +20,18 @@ namespace ByteBank.Portal.Infra.Binding
             {
                 var actionName = path.Split(new char[] { '/' }, StringSplitOptions.RemoveEmptyEntries)[1];
                 var methodInfo = controller.GetType().GetMethod(actionName);
-                return methodInfo;
+                return new ActionBindInfo(methodInfo, Enumerable.Empty<KeyValueArgument>());
             }
             else
             {
                 var controllerAndActionName = path.Substring(0, interrogationIndex);
-                var actionName = path.Split(new char[] { '/' }, StringSplitOptions.RemoveEmptyEntries)[1];
+                var actionName = controllerAndActionName.Split(new char[] { '/' }, StringSplitOptions.RemoveEmptyEntries)[1];
                 var queryString = path.Substring(interrogationIndex + 1);
                 var keyValueTuples = GetKeyValueArguments(queryString);
                 var arguments = keyValueTuples.Select(x => x.Key).ToArray();
                 var methodInfo = GetMethodInfoFromNameAndParameters(actionName, arguments, controller);
-                return methodInfo;
+
+                return new ActionBindInfo(methodInfo, keyValueTuples);
             }
         }
 

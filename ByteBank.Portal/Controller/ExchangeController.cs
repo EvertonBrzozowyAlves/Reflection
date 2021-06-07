@@ -49,5 +49,8 @@ namespace ByteBank.Portal.Controller
 
         public string Calculate(string destinyCurrency, decimal value) =>
             Calculate("BRL", destinyCurrency, value);
+
+        public string Calculate(string destinyCurrency) =>
+            Calculate("BRL", destinyCurrency, 1);
     }
 }

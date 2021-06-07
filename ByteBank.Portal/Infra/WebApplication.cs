@@ -42,7 +42,7 @@ namespace ByteBank.Portal.Infra
             var request = context.Request;
             var response = context.Response;
 
-            var path = request.Url.AbsolutePath;
+            var path = request.Url.PathAndQuery;
 
             if (Utils.IsAFile(path))
             {
