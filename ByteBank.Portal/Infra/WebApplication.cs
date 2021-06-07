@@ -1,8 +1,5 @@
 using System;
 using System.Net;
-using System.Reflection;
-using System.Text;
-using ByteBank.Portal.Controller;
 
 namespace ByteBank.Portal.Infra
 {
@@ -12,18 +9,14 @@ namespace ByteBank.Portal.Infra
         public WebApplication(string[] prefixes)
         {
             if (prefixes == null)
-            {
                 throw new ArgumentException(nameof(prefixes));
-            }
             _prefixes = prefixes;
         }
 
         public void Start()
         {
             while (true)
-            {
                 HandleRequest();
-            }
 
         }
 
@@ -32,9 +25,7 @@ namespace ByteBank.Portal.Infra
             var httpListener = new HttpListener();
 
             foreach (var prefix in _prefixes)
-            {
                 httpListener.Prefixes.Add(prefix);
-            }
 
             httpListener.Start();
 
@@ -54,9 +45,6 @@ namespace ByteBank.Portal.Infra
                 var handler = new ControllerRequestHandler();
                 handler.Handle(response, path);
             }
-
-
-
             httpListener.Stop();
         }
     }

@@ -1,5 +1,3 @@
-using System.IO;
-using System.Reflection;
 using ByteBank.Portal.Infra;
 using ByteBank.Service;
 using ByteBank.Service.Exchange;

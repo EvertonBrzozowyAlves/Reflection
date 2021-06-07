@@ -16,9 +16,7 @@ namespace ByteBank.Portal.Infra.Binding
             MethodInfo = methodInfo ?? throw new ArgumentNullException(nameof(methodInfo));
 
             if (keyValueArgument == null)
-            {
                 throw new ArgumentNullException(nameof(keyValueArgument));
-            }
 
             KeyValueTuple = new ReadOnlyCollection<KeyValueArgument>(keyValueArgument.ToList());
         }
