@@ -9,7 +9,7 @@ namespace ByteBank.Portal.Infra
     {
         private readonly ActionBinder _actionBinder = new ActionBinder();
 
-        public void Handle(HttpListenerResponse response, string path) //TODO: test
+        public void Handle(HttpListenerResponse response, string path) //TODO: test AGAIN!
         {
             var parts = path.Split(new char[] { '/' }, System.StringSplitOptions.RemoveEmptyEntries);
             var controllerName = parts[0];
