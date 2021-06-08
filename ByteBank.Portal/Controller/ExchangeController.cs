@@ -1,3 +1,5 @@
+using System;
+using ByteBank.Portal.Filter;
 using ByteBank.Portal.Infra;
 using ByteBank.Service;
 using ByteBank.Service.Exchange;
@@ -12,6 +14,7 @@ namespace ByteBank.Portal.Controller
             _exchangeService = new ExchangeTestService();
         }
 
+        [OnlyBusinessHours]
         public string MXN()
         {
             var finalValue = _exchangeService.Calculate("MXN", "BRL", 1);
@@ -21,6 +24,7 @@ namespace ByteBank.Portal.Controller
             return finalPageText;
         }
 
+        [OnlyBusinessHours]
         public string USD()
         {
             var finalValue = _exchangeService.Calculate("USD ", "BRL", 1);
@@ -30,24 +34,33 @@ namespace ByteBank.Portal.Controller
             return finalPageText;
         }
 
+        [OnlyBusinessHours]
         public string Calculate(string originCurrency, string destinyCurrency, decimal value)
         {
+            var currentDate = DateTime.Now;
+            var currentHour = currentDate.Hour;
+            if (currentHour >= 16 || currentHour <= 9)
+                return null;
+
+
             var finalValue = _exchangeService.Calculate(originCurrency, destinyCurrency, value);
-            var pageText = View();
-            var finalPageText =
-                pageText
-                    .Replace("VALOR_MOEDA_ORIGEM", value.ToString())
-                    .Replace("VALOR_MOEDA_DESTINO", finalValue.ToString())
-                    .Replace("MOEDA_ORIGEM", originCurrency)
-                    .Replace("MOEDA_DESTINO", destinyCurrency);
 
+            var model = new
+            {
+                DesintyCurrency = destinyCurrency,
+                OriginCurrency = originCurrency,
+                DesintyValue = finalValue,
+                OriginValue = value
+            };
 
-            return finalPageText;
+            return View(model);
         }
 
+        [OnlyBusinessHours]
         public string Calculate(string destinyCurrency, decimal value) =>
             Calculate("BRL", destinyCurrency, value);
 
+        [OnlyBusinessHours]
         public string Calculate(string destinyCurrency) =>
             Calculate("BRL", destinyCurrency, 1);
     }
