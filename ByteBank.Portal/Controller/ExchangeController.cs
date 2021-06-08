@@ -14,7 +14,7 @@ namespace ByteBank.Portal.Controller
             _exchangeService = new ExchangeTestService();
         }
 
-        [OnlyBusinessHours]
+        [OnlyBusinessHoursFilter]
         public string MXN()
         {
             var finalValue = _exchangeService.Calculate("MXN", "BRL", 1);
@@ -24,7 +24,7 @@ namespace ByteBank.Portal.Controller
             return finalPageText;
         }
 
-        [OnlyBusinessHours]
+        [OnlyBusinessHoursFilter]
         public string USD()
         {
             var finalValue = _exchangeService.Calculate("USD ", "BRL", 1);
@@ -34,7 +34,7 @@ namespace ByteBank.Portal.Controller
             return finalPageText;
         }
 
-        [OnlyBusinessHours]
+        [OnlyBusinessHoursFilter]
         public string Calculate(string originCurrency, string destinyCurrency, decimal value)
         {
             var currentDate = DateTime.Now;
@@ -56,11 +56,11 @@ namespace ByteBank.Portal.Controller
             return View(model);
         }
 
-        [OnlyBusinessHours]
+        [OnlyBusinessHoursFilter]
         public string Calculate(string destinyCurrency, decimal value) =>
             Calculate("BRL", destinyCurrency, value);
 
-        [OnlyBusinessHours]
+        [OnlyBusinessHoursFilter]
         public string Calculate(string destinyCurrency) =>
             Calculate("BRL", destinyCurrency, 1);
     }

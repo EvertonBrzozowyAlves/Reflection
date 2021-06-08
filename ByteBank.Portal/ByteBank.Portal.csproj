@@ -13,6 +13,7 @@
     <EmbeddedResource Include="View\Card\Credito.html" />
     <EmbeddedResource Include="View\Card\Debito.html" />
     <EmbeddedResource Include="View\Home\Index.html" />
+    <EmbeddedResource Include="View\Error\Unexpected.html" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\ByteBank.Service\ByteBank.Service.csproj" />

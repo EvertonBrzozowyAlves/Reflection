@@ -6,21 +6,19 @@ namespace ByteBank.Portal.Infra.Filter
 {
     public class FilterResolver
     {
-        public object VerifyFilters(ActionBindInfo actionBindInfo)
+        public FilterResult VerifyFilters(ActionBindInfo actionBindInfo)
         {
             var methodInfo = actionBindInfo.MethodInfo;
 
-            var attributeType = (new OnlyBusinessHoursAttribute()).GetType(); //envolve not used classes with parenthesis
+            // var attributeType = (new FilterAttribute()).GetType(); //envolve not used classes with parenthesis => can't instanciate abstract class
 
-            var attributes = methodInfo.GetCustomAttributes(attributeType, false);
+            var attributes = methodInfo.GetCustomAttributes(typeof(FilterAttribute), false); //not getting methods that inherit this attribute
 
-            foreach (var attribute in attributes)
-            {
-                //TODO: implement
-            }
+            foreach (FilterAttribute attribute in attributes) //cast
+                if (!attribute.CanContinue())
+                    return new FilterResult(false);
 
-            return new { }; //TODO: implement
-
+            return new FilterResult(true);
         }
     }
 }

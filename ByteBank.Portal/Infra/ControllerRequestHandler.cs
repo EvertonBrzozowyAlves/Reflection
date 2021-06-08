@@ -25,15 +25,26 @@ namespace ByteBank.Portal.Infra
             var actionBindInfo = _actionBinder.GetMethodInfo(controller, path);
 
             var filterResult = _filterResolver.VerifyFilters(actionBindInfo);
-            var actionResult = (string)actionBindInfo.Invoke(controller);
 
-            var fileBuffer = Encoding.UTF8.GetBytes(actionResult);
+            if (filterResult.CanContinue)
+            {
+                var actionResult = (string)actionBindInfo.Invoke(controller);
 
-            response.StatusCode = 200;
-            response.ContentType = "text/html; charset=utf-8";
-            response.ContentLength64 = fileBuffer.Length;
-            response.OutputStream.Write(fileBuffer, 0, fileBuffer.Length);
-            response.OutputStream.Close();
+                var fileBuffer = Encoding.UTF8.GetBytes(actionResult);
+
+                response.StatusCode = 200;
+                response.ContentType = "text/html; charset=utf-8";
+                response.ContentLength64 = fileBuffer.Length;
+                response.OutputStream.Write(fileBuffer, 0, fileBuffer.Length);
+                response.OutputStream.Close();
+            }
+            else
+            {
+                response.StatusCode = 307; //temporary redirect
+                response.RedirectLocation = "Error/Unexpected";
+                response.OutputStream.Close();
+            }
+
         }
     }
 }
