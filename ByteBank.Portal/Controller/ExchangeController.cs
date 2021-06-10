@@ -2,6 +2,7 @@ using System;
 using ByteBank.Portal.Filter;
 using ByteBank.Portal.Infra;
 using ByteBank.Service;
+using ByteBank.Service.Card;
 using ByteBank.Service.Exchange;
 
 namespace ByteBank.Portal.Controller
@@ -9,9 +10,11 @@ namespace ByteBank.Portal.Controller
     public class ExchangeController : ControllerBase
     {
         private IExchangeService _exchangeService;
-        public ExchangeController()
+        private ICardService _cardService;
+        public ExchangeController(IExchangeService exchangeService, ICardService cardService)
         {
-            _exchangeService = new ExchangeTestService();
+            _exchangeService = exchangeService;
+            _cardService = cardService;
         }
 
         [OnlyBusinessHoursFilter]
@@ -44,13 +47,15 @@ namespace ByteBank.Portal.Controller
 
 
             var finalValue = _exchangeService.Calculate(originCurrency, destinyCurrency, value);
+            var promotionalCard = _cardService.GetPromotionalCreditCard();
 
             var model = new
             {
                 DesintyCurrency = destinyCurrency,
                 OriginCurrency = originCurrency,
                 DesintyValue = finalValue,
-                OriginValue = value
+                OriginValue = value,
+                PromotionCard = promotionalCard
             };
 
             return View(model);

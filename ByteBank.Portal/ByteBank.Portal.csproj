@@ -10,8 +10,8 @@
     <EmbeddedResource Include="Assets\css\styles.css" />
     <EmbeddedResource Include="View\Exchange\MXN.html" />
     <EmbeddedResource Include="View\Exchange\USD.html" />
-    <EmbeddedResource Include="View\Card\Credito.html" />
-    <EmbeddedResource Include="View\Card\Debito.html" />
+    <EmbeddedResource Include="View\Card\Credit.html" />
+    <EmbeddedResource Include="View\Card\Debit.html" />
     <EmbeddedResource Include="View\Home\Index.html" />
     <EmbeddedResource Include="View\Error\Unexpected.html" />
   </ItemGroup>
