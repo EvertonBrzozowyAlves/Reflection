@@ -54,7 +54,7 @@ namespace ByteBank.Portal.Infra
             }
             else
             {
-                var handler = new ControllerRequestHandler();
+                var handler = new ControllerRequestHandler(_container);
                 handler.Handle(response, path);
             }
             httpListener.Stop();
