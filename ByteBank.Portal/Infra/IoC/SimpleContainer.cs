@@ -40,9 +40,38 @@ namespace ByteBank.Portal.Infra.IoC
             }
         }
 
-        public object Get(Type origin)
+        public object Get(Type originType)
         {
-            throw new NotImplementedException();
+            var isOriginMapped = _typesMapping.ContainsKey(originType);
+            if (isOriginMapped)
+            {
+                var destinyType = _typesMapping[originType];
+                return Get(destinyType); //??
+            }
+
+            var constructors = originType.GetConstructors();
+            var constructorWithNoParameters = constructors.FirstOrDefault(c => c.GetParameters().Any() == false);
+
+            if (constructorWithNoParameters != null)
+            {
+                var instanceOfParameterlessConstructor = constructorWithNoParameters.Invoke(new object[0]);
+                return instanceOfParameterlessConstructor;
+            }
+
+            //taking any construtor
+            var constructorParameters = constructors[0].GetParameters();
+            var paramValues = new object[constructorParameters.Count()];
+
+            for (int i = 0; i < constructorParameters.Length; i++)
+            {
+                var param = constructorParameters[i];
+                var parameterType = param.GetType();
+
+                paramValues[i] = Get(parameterType);
+            }
+
+            var instanceOfAnotherConstructor = constructors[0].Invoke(paramValues);
+            return instanceOfAnotherConstructor;
         }
     }
 }

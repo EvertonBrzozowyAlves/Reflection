@@ -3,6 +3,7 @@ using System.Net;
 using System.Text;
 using ByteBank.Portal.Infra.Binding;
 using ByteBank.Portal.Infra.Filter;
+using ByteBank.Portal.Infra.IoC;
 
 namespace ByteBank.Portal.Infra
 {
@@ -10,6 +11,12 @@ namespace ByteBank.Portal.Infra
     {
         private readonly ActionBinder _actionBinder = new ActionBinder();
         private readonly FilterResolver _filterResolver = new FilterResolver();
+        private readonly ControllerResolver _controllerResolver;
+
+        public ControllerRequestHandler(IContainer container)
+        {
+            _controllerResolver = new ControllerResolver(container);
+        }
 
         public void Handle(HttpListenerResponse response, string path)
         {
@@ -18,8 +25,8 @@ namespace ByteBank.Portal.Infra
             var actionName = parts[1];
 
             var fullControllerName = $"ByteBank.Portal.Controller.{controllerName}Controller";
-            var controllerWrapper = Activator.CreateInstance("ByteBank.Portal", fullControllerName, new object[0]);
-            var controller = controllerWrapper.Unwrap();
+
+            var controller = _controllerResolver.GetController(fullControllerName);
 
             // var methodInfo = controller.GetType().GetMethod(actionName);
             var actionBindInfo = _actionBinder.GetMethodInfo(controller, path);
