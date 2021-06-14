@@ -21,8 +21,8 @@ namespace ByteBank.Portal.Infra
 
         private void Configure()
         {
-            _container.Register(typeof(IExchangeService), typeof(ExchangeTestService));
-            _container.Register(typeof(ICardService), typeof(CardTestService));
+            _container.Register<IExchangeService, ExchangeTestService>();
+            _container.Register<ICardService, CardTestService>();
         }
 
         public void Start()

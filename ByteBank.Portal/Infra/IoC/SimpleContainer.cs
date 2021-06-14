@@ -14,9 +14,17 @@ namespace ByteBank.Portal.Infra.IoC
         public void Register(Type origin, Type destiny)
         {
             if (_typesMapping.ContainsKey(origin))
-                throw new InvalidOperationException("Tipo já mapeado");
+                throw new InvalidOperationException("Type already mapped!");
             VerifyHierarchy(origin, destiny);
             _typesMapping.Add(origin, destiny);
+        }
+        public void Register<TOrigyn, TDestiny>() where TDestiny : TOrigyn
+        {
+            if (_typesMapping.ContainsKey(typeof(TOrigyn)))
+                throw new InvalidOperationException("Type already mapped!");
+
+            _typesMapping.Add(typeof(TOrigyn), typeof(TDestiny));
+
         }
 
         private void VerifyHierarchy(Type origin, Type destiny)
